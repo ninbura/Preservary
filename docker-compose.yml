@@ -1,0 +1,6 @@
+services:
+  preservary:
+    image: ${DOCKER_REGISTRY-}preservary
+    build:
+      context: .
+      dockerfile: Preservary/Dockerfile
