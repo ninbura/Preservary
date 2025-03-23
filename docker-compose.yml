@@ -4,3 +4,5 @@ services:
     build:
       context: .
       dockerfile: Preservary/Dockerfile
+    volumes:
+      - ./appsettings.json:/app/appsettings.json
