@@ -1,0 +1,13 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: preservary-dev
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "40000:40000"
+    entrypoint: /dlv --listen=:40000 --headless=true --api-version=2 --accept-multiclient --continue=false exec /app
+    environment:
+      - DEBUG=true

@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Go App",
+            "type": "go",
+            "request": "attach",
+            "mode": "remote",
+            "port": 40000,
+            "host": "localhost",
+            "remotePath": "/go/src/app",
+            "substitutePath": [
+                {
+                    "from": "${workspaceFolder}",
+                    "to": "/go/src/app"
+                }
+            ],
+            "preLaunchTask": "Start Debug Container",
+            "postDebugTask": "Stop Debug Container"
+        }
+    ]
+}

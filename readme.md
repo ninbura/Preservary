@@ -1,2 +1,2 @@
 # Preservary
-A Dockerized backup utility written in .NET
+A Dockerized backup utility written in Go.

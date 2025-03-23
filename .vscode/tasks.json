@@ -1,0 +1,27 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Start Debug Container",
+            "type": "shell",
+            "command": "docker compose -f compose.dev.yml up --build",
+            "isBackground": true,
+            "problemMatcher": {
+                "pattern": {
+                    "regexp": "."
+                },
+                "background": {
+                    "activeOnStart": true,
+                    "beginsPattern": ".",
+                    "endsPattern": "API server listening at: \\[::\\]:40000"
+                }
+            }
+        },
+        {
+            "label": "Stop Debug Container",
+            "type": "shell",
+            "command": "docker compose -f compose.dev.yml down",
+            "problemMatcher": []
+        }
+    ]
+}

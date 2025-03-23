@@ -1,8 +1,0 @@
-services:
-  preservary:
-    image: ${DOCKER_REGISTRY-}preservary
-    build:
-      context: .
-      dockerfile: Preservary/Dockerfile
-    volumes:
-      - ./appsettings.json:/app/appsettings.json
