@@ -4,10 +4,19 @@ services:
       context: .
       dockerfile: dockerfiles/Dockerfile.dev
     container_name: preservary-dev
+    image: preservary-dev
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./config.json:/config.json
     ports:
       - "40000:40000"
-    entrypoint: /dlv --listen=:40000 --headless=true --api-version=2 --accept-multiclient --continue=false exec /app
+    entrypoint: /dlv --listen=:40000 --headless=true --api-version=2 --accept-multiclient exec /app # --log --log-output=debugger 
+    tty: true
+    stdin_open: true
     environment:
       - DEBUG=true
+    # develop:
+    #   watch:
+    #     - action: rebuild
+    #       path: ./preservary
+    #       target: /go/src/preservary

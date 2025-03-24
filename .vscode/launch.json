@@ -8,15 +8,15 @@
             "mode": "remote",
             "port": 40000,
             "host": "localhost",
-            "remotePath": "/go/src/app",
+            "remotePath": "/go/src",
             "substitutePath": [
                 {
                     "from": "${workspaceFolder}",
-                    "to": "/go/src/app"
+                    "to": "/go/src"
                 }
             ],
             "preLaunchTask": "Start Debug Container",
-            "postDebugTask": "Stop Debug Container"
+            "postDebugTask": "Stop Debug Container",
         }
     ]
 }

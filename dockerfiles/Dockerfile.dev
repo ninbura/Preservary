@@ -1,17 +1,16 @@
 #build stage
 FROM golang:alpine AS builder
 RUN apk add --no-cache git
-WORKDIR /go/src/app
+RUN go install github.com/go-delve/delve/cmd/dlv@latest
+WORKDIR /go/src/preservary
 COPY ../preservary .
 RUN go get -d -v ./...
-RUN go install github.com/go-delve/delve/cmd/dlv@latest
-RUN go build -gcflags="all=-N -l" -o /go/bin/app -v ./...
+RUN go build -gcflags="all=-N -l" -o /go/bin/app -v .
 
 #final stage
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates docker-cli tar
 COPY --from=builder /go/bin/app /app
 COPY --from=builder /go/bin/dlv /dlv
-RUN mkdir -p /go/src/app
-COPY . /go/src/app
+COPY --from=builder /go/src /go/src
 ENTRYPOINT ["/app"]
