@@ -2,12 +2,13 @@ package main
 
 import (
 	"log"
-	"preservary/models"
+	"preservary/config"
+	// "github.com/go-co-op/gocron"
 )
 
 func main() {
 	// Load the configuration file
-	config, err := models.LoadConfig("/config.json") // Replace with the path to your JSON file
+	config, err := config.LoadConfig("/config.json") // Replace with the path to your JSON file
 
 	if err != nil {
 		log.Fatalf("Error loading config: %v", err)

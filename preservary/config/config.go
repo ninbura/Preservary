@@ -1,15 +1,16 @@
-package models
+package config
 
 import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"preservary/location"
 )
 
 type Config struct {
 	// LogLevel     string         `json:"LogLevel"`
 	// BackupPolicy string         `json:"BackupPolicy"`
-	Locations []LocationJSON `json:"Locations"`
+	Locations []location.LocationJSON `json:"Locations"`
 }
 
 func LoadConfig(filePath string) (*Config, error) {
@@ -30,24 +31,18 @@ func LoadConfig(filePath string) (*Config, error) {
 	return &config, nil
 }
 
-func (c *Config) GetLocations() ([]Location, error) {
-	var locations []Location
+func (c *Config) GetLocations() ([]location.Location, error) {
+	var locs []location.Location
 
 	for _, locJSON := range c.Locations {
-		location, err := NewLocation(
-			locJSON.SourcePath,
-			locJSON.DestinationPath,
-			locJSON.ComposePath,
-			locJSON.BackupInterval,
-			locJSON.Archive,
-		)
+		location, err := locJSON.NewLocation()
 
 		if err != nil {
 			return nil, fmt.Errorf("error creating Location: %w", err)
 		}
 
-		locations = append(locations, *location)
+		locs = append(locs, *location)
 	}
 
-	return locations, nil
+	return locs, nil
 }

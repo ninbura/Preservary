@@ -1,42 +1,12 @@
-package models
+package location
 
 import (
 	"fmt"
+	"log"
+	"os"
 	"strconv"
 	"strings"
 )
-
-type Location struct {
-	SourcePath              string
-	DestinationPath         string
-	ComposePath             string
-	BackupIntervalInMinutes int
-	Archive                 bool
-}
-
-type LocationJSON struct {
-	SourcePath      string `json:"SourcePath"`
-	DestinationPath string `json:"DestinationPath"`
-	ComposePath     string `json:"ComposePath"`
-	BackupInterval  string `json:"BackupInterval"`
-	Archive         bool   `json:"Archive"`
-}
-
-func NewLocation(sourcePath, destinationPath, composePath, backupInterval string, archive bool) (*Location, error) {
-	minutes, err := parseBackupInterval(backupInterval)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &Location{
-		SourcePath:              sourcePath,
-		DestinationPath:         destinationPath,
-		ComposePath:             composePath,
-		BackupIntervalInMinutes: minutes,
-		Archive:                 archive,
-	}, nil
-}
 
 func parseBackupInterval(interval string) (int, error) {
 	const (
@@ -80,3 +50,49 @@ func parseBackupInterval(interval string) (int, error) {
 
 	return 0, fmt.Errorf("invalid BackupInterval format: %s", interval)
 }
+
+func validatePath(path string, childCheck bool) (bool, error) {
+	info, err := os.Stat(path)
+
+	if os.IsNotExist(err) {
+		return false, fmt.Errorf("path '%s' does not exist", path)
+	}
+
+	if err != nil {
+		return false, fmt.Errorf("error accessing path '%s': %v", path, err)
+	}
+
+	if !info.IsDir() {
+		return false, fmt.Errorf("path '%s' is not a directory", path)
+	}
+
+	if !childCheck {
+		return true, nil
+	}
+
+	dir, err := os.Open(path)
+
+	if err != nil {
+		return false, fmt.Errorf("error opening directory '%s': %v", path, err)
+	}
+
+	defer dir.Close()
+
+	children, err := dir.Readdirnames(1)
+
+	if err != nil {
+		return false, fmt.Errorf("error reading directory '%s': %v", path, err)
+	}
+
+	if len(children) > 0 {
+		return true, nil
+	}
+
+	return false, fmt.Errorf("path '%s' exists but has no children", path)
+}
+
+func processLocation(loc *Location) {
+	log.Printf("nice")
+}
+
+// func ScheduleLocations

@@ -3,6 +3,8 @@ FROM golang:alpine AS builder
 RUN apk add --no-cache git
 RUN go install github.com/go-delve/delve/cmd/dlv@latest
 WORKDIR /go/src/preservary
+COPY ../preservary/go.mod ../preservary/go.sum ./
+RUN go mod download
 COPY ../preservary .
 RUN go get -d -v ./...
 RUN go build -gcflags="all=-N -l" -o /go/bin/app -v .
