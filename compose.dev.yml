@@ -2,7 +2,7 @@ services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: dockerfiles/Dockerfile.dev
     container_name: preservary-dev
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
